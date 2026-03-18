@@ -21,9 +21,6 @@ export default defineConfig({
         baseUrl:
           "https://github.com/PrajwalAmte/Production-AI-Patterns/edit/main/site/",
       },
-      components: {
-        Sidebar: "./src/components/EmptySidebar.astro",
-      },
       customCss: ["./src/styles/custom.css"],
       head: [
         {
@@ -32,6 +29,11 @@ export default defineConfig({
             property: "og:image",
             content: "/og-image.png",
           },
+        },
+        {
+          tag: "script",
+          attrs: { type: "module" },
+          content: `if(document.querySelector('.mermaid')){const{default:m}=await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');m.initialize({startOnLoad:true,theme:document.documentElement.dataset.theme==='light'?'default':'dark'});}`,
         },
       ],
       sidebar: [

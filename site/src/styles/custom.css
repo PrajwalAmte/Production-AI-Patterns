@@ -37,21 +37,31 @@
   color: #065f46;
 }
 
-/* ── Remove sidebar, expand content ── */
-.sidebar-pane {
+/* ── Sidebar groups: always expanded, non-collapsible ── */
+#starlight__sidebar details > summary {
+  pointer-events: none;
+  cursor: default;
+  list-style: none;
+}
+
+#starlight__sidebar details > summary::marker,
+#starlight__sidebar details > summary::-webkit-details-marker {
   display: none !important;
 }
 
-/* Let content span the full width on desktop */
-@media (min-width: 50rem) {
-  .main-frame {
-    grid-template-columns: 1fr !important;
-  }
+/* Hide the collapse caret icon */
+#starlight__sidebar details > summary svg {
+  display: none;
 }
 
-/* Hide mobile sidebar toggle since there's no sidebar */
-starlight-menu-button {
-  display: none !important;
+/* Force content visible even if <details> loses [open] */
+#starlight__sidebar details:not([open]) > :not(summary) {
+  display: block !important;
+}
+
+/* Re-enable pointer events on actual links */
+#starlight__sidebar details a {
+  pointer-events: auto;
 }
 
 .pagination-links {

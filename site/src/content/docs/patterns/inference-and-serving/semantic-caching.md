@@ -24,17 +24,15 @@ Traditional exact-match caching misses the vast majority of cache opportunities 
 
 ## How It Works
 
-```
-Query → Embed → Search cache (cosine similarity)
-                    │
-          ┌─────────┴──────────┐
-          │                    │
-     Hit (sim > threshold)   Miss
-          │                    │
-     Return cached         Call LLM → Cache response
-     response                  │
-                          Return response
-```
+<pre class="mermaid">
+flowchart TD
+A["Query arrives"] --> B["Generate embedding"]
+B --> C{"Search cache\n(cosine similarity)"}
+C -->|"Hit (sim ≥ threshold)"| D["Return cached response"]
+C -->|"Miss"| E["Call LLM"]
+E --> F["Cache response with TTL"]
+F --> G["Return response"]
+</pre>
 
 1. A new query arrives and is converted to an embedding vector using a lightweight embedding model.
 2. The embedding is compared against all cached query embeddings using cosine similarity (or approximate nearest neighbor search).
