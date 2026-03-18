@@ -8,7 +8,7 @@ A structured pattern library for engineers building AI systems in production. Na
 
 ## What This Is
 
-- A curated set of named patterns organized into 8 pillars.
+- A curated set of named patterns organized into 10 pillars.
 - Every pattern includes: how it works, when to use it, when NOT to use it, trade-offs, and implementation examples.
 - Opinionated and practical. Written for practitioners, not researchers.
 - Framework-agnostic, model-agnostic, vendor-neutral.
@@ -20,7 +20,7 @@ A structured pattern library for engineers building AI systems in production. Na
 - Not a research paper collection.
 - Not AI-generated content without human review.
 
-## The 8 Pillars
+## The 10 Pillars
 
 | # | Pillar | Covers |
 |---|---|---|
@@ -32,6 +32,8 @@ A structured pattern library for engineers building AI systems in production. Na
 | 6 | **Security & Trust** | Input sanitization, output validation, PII handling, audit trails |
 | 7 | **Cost & Efficiency** | Token budgets, model tiering, prompt compression, cost breakers |
 | 8 | **Governance & Compliance** | Model cards, data lineage, policy-as-code, human-in-the-loop |
+| 9 | **Graph Patterns** | GraphRAG, graph-of-thoughts reasoning, entity resolution |
+| 10 | **Evaluation & Testing** | LLM-as-Judge, eval pipelines, regression testing, benchmarking |
 
 ## Pattern Format
 
@@ -52,7 +54,7 @@ Every pattern follows the same structure:
 
 ### Browse the site
 
-Visit [prajwalamte.github.io/Production-AI-Patterns](https://prajwalamte.github.io/Production-AI-Patterns) to read patterns with full-text search, navigation, and dark mode.
+Visit [prajwalamte.github.io/Production-AI-Patterns](https://prajwalamte.github.io/Production-AI-Patterns) to read patterns with full-text search, navigation, dark mode, and an interactive [pattern graph](https://prajwalamte.github.io/Production-AI-Patterns/graph/) showing how patterns relate across pillars.
 
 ### Run locally
 
@@ -92,13 +94,17 @@ Every pattern must include a "When NOT to Use It" section. This is what makes th
 ```
 production-ai-patterns/
 ├── site/                      # Astro + Starlight documentation site
-│   ├── src/content/docs/
-│   │   ├── patterns/          # All pattern entries organized by pillar
-│   │   └── guides/            # Getting started, decision guide, glossary
+│   ├── src/
+│   │   ├── components/        # PatternGraph interactive visualization
+│   │   ├── content/docs/
+│   │   │   ├── patterns/      # 14 patterns across 10 pillar directories
+│   │   │   ├── graph.mdx      # Interactive pattern relationship graph
+│   │   │   └── guides/        # Getting started, decision guide, glossary
+│   │   └── styles/
 │   └── astro.config.mjs
-├── schema/                    # JSON Schema for pattern frontmatter
-├── scripts/                   # Validation and build scripts
-├── .github/                   # Actions, issue templates, PR template
+├── schema/                    # JSON Schema for pattern frontmatter validation
+├── scripts/                   # validate-schema.js
+├── .github/                   # Actions (deploy, validate), issue templates, PR template
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
 └── LICENSE
