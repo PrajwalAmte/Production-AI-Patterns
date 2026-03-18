@@ -13,7 +13,7 @@ Browse the sidebar. Patterns are organized into 8 pillars. Each pillar covers a 
 
 ### If you are not sure where to start
 
-Use the [Decision Guide](/guides/decision-guide/) to answer a few questions about your system and get recommended patterns.
+Use the [Decision Guide](/Production-AI-Patterns/guides/decision-guide/) to answer a few questions about your system and get recommended patterns.
 
 ### If you want to understand the landscape
 

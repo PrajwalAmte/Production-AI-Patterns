@@ -192,10 +192,10 @@ fields:
 
 ## Related Patterns
 
-- **[Feature Store Pattern](/patterns/data-patterns/feature-store/)** — Feature stores consume data that should be covered by contracts.
-- **[Data Observability Pattern](/patterns/data-patterns/data-observability/)** — Observability detects contract violations at runtime. Contracts define what "correct" means.
-- **[Training Data Pipeline Pattern](/patterns/data-patterns/training-data-pipeline/)** — Training pipelines need contracts on their input data sources.
-- **[Eval Dataset Management](/patterns/data-patterns/eval-dataset-management/)** — Eval datasets are themselves data artifacts that benefit from contract enforcement.
+- **[Feature Store Pattern](/Production-AI-Patterns/patterns/data-patterns/feature-store/)** — Feature stores consume data that should be covered by contracts.
+- **[Data Observability Pattern](/Production-AI-Patterns/patterns/data-patterns/data-observability/)** — Observability detects contract violations at runtime. Contracts define what "correct" means.
+- **[Training Data Pipeline Pattern](/Production-AI-Patterns/patterns/data-patterns/training-data-pipeline/)** — Training pipelines need contracts on their input data sources.
+- **[Eval Dataset Management](/Production-AI-Patterns/patterns/data-patterns/eval-dataset-management/)** — Eval datasets are themselves data artifacts that benefit from contract enforcement.
 
 ## Further Reading
 

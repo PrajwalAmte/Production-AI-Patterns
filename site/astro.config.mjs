@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
 export default defineConfig({
-  site: "https://prajwalamte.github.io/Production-AI-Patterns",
+  site: "https://prajwalamte.github.io",
   base: "/Production-AI-Patterns",
   integrations: [
     starlight({

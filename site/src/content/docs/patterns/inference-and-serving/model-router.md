@@ -145,11 +145,11 @@ For production systems, replace the rule-based classifier with a trained lightwe
 
 ## Related Patterns
 
-- **[LLM Gateway Pattern](/patterns/inference-and-serving/llm-gateway/)** — The gateway executes the routing decision. Router logic often lives inside the gateway.
-- **[Semantic Caching](/patterns/inference-and-serving/semantic-caching/)** — Check the cache before routing. Cached responses bypass model selection entirely.
-- **[Tiered Model Strategy](/patterns/cost-and-efficiency/tiered-model-strategy/)** — The broader cost strategy that model routing implements.
-- **[Cost Attribution Pattern](/patterns/observability/cost-attribution/)** — Measures cost savings from routing to validate the approach.
-- **[Quality Drift Detection](/patterns/observability/quality-drift-detection/)** — Detects when routing decisions degrade output quality over time.
+- **[LLM Gateway Pattern](/Production-AI-Patterns/patterns/inference-and-serving/llm-gateway/)** — The gateway executes the routing decision. Router logic often lives inside the gateway.
+- **[Semantic Caching](/Production-AI-Patterns/patterns/inference-and-serving/semantic-caching/)** — Check the cache before routing. Cached responses bypass model selection entirely.
+- **[Tiered Model Strategy](/Production-AI-Patterns/patterns/cost-and-efficiency/tiered-model-strategy/)** — The broader cost strategy that model routing implements.
+- **[Cost Attribution Pattern](/Production-AI-Patterns/patterns/observability/cost-attribution/)** — Measures cost savings from routing to validate the approach.
+- **[Quality Drift Detection](/Production-AI-Patterns/patterns/observability/quality-drift-detection/)** — Detects when routing decisions degrade output quality over time.
 
 ## Further Reading
 
