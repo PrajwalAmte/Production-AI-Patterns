@@ -1,8 +1,8 @@
-# Production AI Patterns
+# AI Engineering Patterns
 
 A structured pattern library for engineers building AI systems in production. Named patterns with trade-offs, when-to-use guides, and code examples for every layer of a production AI system.
 
-**The same way the Gang of Four gave software engineers a shared vocabulary for code design, Production AI Patterns gives AI engineers a shared vocabulary for shipping reliable, cost-effective, and trustworthy AI systems.**
+**The same way the Gang of Four gave software engineers a shared vocabulary for code design, AI Engineering Patterns gives AI engineers a shared vocabulary for shipping reliable, cost-effective, and trustworthy AI systems.**
 
 [Browse the patterns &rarr;](https://prajwalamte.github.io/Production-AI-Patterns)
 
@@ -92,7 +92,7 @@ Every pattern must include a "When NOT to Use It" section. This is what makes th
 ## Project Structure
 
 ```
-production-ai-patterns/
+ai-engineering-patterns/
 ├── site/                      # Astro + Starlight documentation site
 │   ├── src/
 │   │   ├── components/        # PatternGraph interactive visualization

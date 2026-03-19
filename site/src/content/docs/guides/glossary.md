@@ -1,6 +1,6 @@
 ---
 title: Glossary
-description: Key terms used throughout Production AI Patterns.
+description: Key terms used throughout AI Engineering Patterns.
 ---
 
 ## A

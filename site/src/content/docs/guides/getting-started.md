@@ -1,9 +1,9 @@
 ---
 title: Getting Started
-description: How to use Production AI Patterns and find the right patterns for your system.
+description: How to use AI Engineering Patterns and find the right patterns for your system.
 ---
 
-Production AI Patterns is a structured pattern library for engineers building AI systems in production. It is not an awesome list of links, not vendor documentation, and not a research paper collection. It is a curated set of named patterns with descriptions, trade-offs, when-to-use guides, and code examples for every layer of a production AI system.
+AI Engineering Patterns is a structured pattern library for engineers building AI systems in production. It is not an awesome list of links, not vendor documentation, and not a research paper collection. It is a curated set of named patterns with descriptions, trade-offs, when-to-use guides, and code examples for every layer of a production AI system.
 
 ## How to Use This Resource
 

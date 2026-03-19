@@ -7,7 +7,7 @@ export default defineConfig({
   base: "/Production-AI-Patterns",
   integrations: [
     starlight({
-      title: "Production AI Patterns",
+      title: "AI Engineering Patterns",
       description:
         "A structured pattern library for engineers building AI systems in production. Named patterns with trade-offs, implementation guides, and code examples.",
       social: [
