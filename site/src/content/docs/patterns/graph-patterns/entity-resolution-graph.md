@@ -32,37 +32,17 @@ Without resolution, knowledge graphs have duplicate nodes, RAG systems retrieve 
 
 ## How It Works
 
-```
-   Source A        Source B        Source C
-     │                │               │
-     ▼                ▼               ▼
-  Extract          Extract         Extract
-  Mentions         Mentions        Mentions
-     │                │               │
-     └────────┬───────┘───────────────┘
-              │
-     Candidate Generation
-      (blocking + pairs)
-              │
-              ▼
-     Pairwise Similarity
-      (name, context, embeddings)
-              │
-              ▼
-     Build Resolution Graph
-      (entities as nodes,
-       similarities as edges)
-              │
-              ▼
-     Community Detection
-      (connected components
-       or clustering)
-              │
-              ▼
-     Merge & Deduplicate
-      (canonical entity
-       per cluster)
-```
+<pre class="mermaid">
+flowchart TD
+    A["Mentions from source A"] --> D["Candidate generation (blocking)"]
+    B["Mentions from source B"] --> D
+    C["Mentions from source C"] --> D
+    D --> E["Pairwise similarity scoring"]
+    E --> F["Build resolution graph"]
+    F --> G["Community detection / clustering"]
+    G --> H["Merge cluster into canonical entities"]
+    H --> I["Deduplicated entity store"]
+</pre>
 
 1. **Extract mentions** — Pull entity mentions from each source with context (surrounding text, metadata, co-occurring entities).
 2. **Blocking** — Create candidate pairs using cheap heuristics (same first letter, shared token, locality-sensitive hashing) to avoid O(n^2) comparisons.

@@ -31,17 +31,22 @@ Specific failure scenarios:
 
 ## How It Works
 
-```
-┌──────────────┐    Contract    ┌──────────────┐
-│ Data Producer │───(schema +───│ Data Consumer │
-│   (Team A)    │   quality +   │   (AI Team)   │
-└──────┬───────┘    SLA)        └──────┬───────┘
-       │                               │
-       ▼                               ▼
-  Producer CI:                    Consumer CI:
-  Validate output                 Validate input
-  against contract                against contract
-```
+<pre class="mermaid">
+flowchart TD
+    A["Data producer team"] --> C["Define contract: schema, quality rules, SLA"]
+    B["Data consumer team"] --> C
+    C --> D["Version contract artifact"]
+    D --> E["Producer CI validates outgoing data"]
+    D --> F["Consumer CI validates incoming data"]
+    E --> G{"Producer validation pass?"}
+    F --> H{"Consumer validation pass?"}
+    G -->|"No"| I["Block publish + alert"]
+    H -->|"No"| J["Block ingest + alert"]
+    G -->|"Yes"| K["Publish data"]
+    H -->|"Yes"| L["Ingest data"]
+    K --> M["Reliable downstream AI pipeline"]
+    L --> M
+</pre>
 
 1. Producer and consumer teams agree on a contract definition (schema, quality rules, SLAs).
 2. The contract is stored as a versioned artifact (YAML, JSON, or Protobuf) in a shared repository or registry.

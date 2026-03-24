@@ -30,21 +30,35 @@ Without a gateway, every service that calls an LLM embeds its own API keys, retr
 
 ## How It Works
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────────┐
-│  Service A   │────▶│              │────▶│  OpenAI API      │
-├──────────────┤     │              │     ├──────────────────┤
-│  Service B   │────▶│  LLM Gateway │────▶│  Anthropic API   │
-├──────────────┤     │              │     ├──────────────────┤
-│  Service C   │────▶│              │────▶│  Self-hosted      │
-└──────────────┘     └──────────────┘     └──────────────────┘
-                           │
-                     ┌─────┴─────┐
-                     │  Logging  │
-                     │  Metrics  │
-                     │  Budgets  │
-                     └───────────┘
-```
+<pre class="mermaid">
+flowchart LR
+    subgraph S["Application Services"]
+      A["Service A"]
+      B["Service B"]
+      C["Service C"]
+    end
+
+    subgraph G["LLM Gateway"]
+      D["Auth + policy checks"]
+      E["Routing + retries + failover"]
+      F["Response normalization"]
+    end
+
+    subgraph P["Providers"]
+      P1["OpenAI API"]
+      P2["Anthropic API"]
+      P3["Self-hosted model API"]
+    end
+
+    A --> D
+    B --> D
+    C --> D
+    D --> E --> F
+    F --> P1
+    F --> P2
+    F --> P3
+    F --> M[("Logs, metrics, and cost budgets")]
+</pre>
 
 1. Application services send inference requests to the gateway using a unified API format.
 2. The gateway resolves which provider and model to use based on routing rules.

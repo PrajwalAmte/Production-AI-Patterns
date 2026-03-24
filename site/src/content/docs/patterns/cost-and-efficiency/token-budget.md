@@ -32,42 +32,24 @@ Common runaway scenarios:
 
 ## How It Works
 
-```
-Request Assembly
-      │
-      ▼
-┌─────────────────┐
-│ Calculate token  │
-│    budget         │
-│                   │
-│  System prompt:  │
-│    800 tokens    │
-│  Context:        │
-│    3,000 tokens  │
-│  User query:     │
-│    200 tokens    │
-│  Output reserve: │
-│    1,000 tokens  │
-│  ─────────────   │
-│  Total: 5,000    │
-└────────┬────────┘
-         │
-    Budget exceeded?
-    ┌────┴────┐
-    No       Yes
-    │         │
-    ▼         ▼
-  Send     Trim context
-  as-is    (drop oldest chunks,
-            summarize history,
-            truncate)
-            │
-            ▼
-          Re-check
-            │
-            ▼
-          Send
-```
+<pre class="mermaid">
+flowchart TD
+    A["Request assembly"] --> B["Count tokens by component"]
+    B --> C{"Within token budget?"}
+    C -->|"Yes"| D["Reserve output tokens"]
+    D --> E["Send prompt to model"]
+    C -->|"No"| F["Trim variable context"]
+    F --> F1["Drop lowest-relevance chunks"]
+    F --> F2["Summarize older conversation turns"]
+    F --> F3["Truncate as last resort"]
+    F1 --> G["Recalculate token counts"]
+    F2 --> G
+    F3 --> G
+    G --> C
+    G --> H{"Still above hard limit?"}
+    H -->|"Yes"| I["Reject request with clear budget error"]
+    H -->|"No"| D
+</pre>
 
 1. **Define per-component budgets**: Allocate the total context window across fixed components (system prompt, few-shot examples) and variable components (retrieved context, conversation history, user input).
 2. **Measure token counts**: Count tokens for each component before assembling the prompt. Use the model's tokenizer for accurate counts.

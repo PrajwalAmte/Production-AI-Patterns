@@ -32,21 +32,17 @@ Specific failure scenarios:
 
 ## How It Works
 
-```
-Model Development         Model Card Creation         Deployment
-      │                          │                        │
-      ▼                          ▼                        ▼
-  Train/Fine-tune ──────▶ Fill model card ──────▶ Card reviewed
-  Evaluate              template with            by stakeholders
-  Test                  results + metadata              │
-                                                        ▼
-                                                 Card published
-                                                 alongside model
-                                                        │
-                                                        ▼
-                                                 Deploy with card
-                                                 as artifact
-```
+<pre class="mermaid">
+flowchart LR
+    A["Train, evaluate, and test model"] --> B["Populate model card template"]
+    B --> C["Cross-functional review"]
+    C --> D{"Card complete and approved?"}
+    D -->|"No"| E["Revise evidence and risk notes"]
+    E --> B
+    D -->|"Yes"| F["Version and publish card with model"]
+    F --> G["Deploy model + card as linked artifacts"]
+    G --> H["Update card on retrain, fine-tune, or policy changes"]
+</pre>
 
 1. **Template**: Define a standard model card template with required and optional sections.
 2. **Populate during development**: The model card is filled in during development, not after. Evaluation results, training data descriptions, and limitation documentation are captured as the model is built.

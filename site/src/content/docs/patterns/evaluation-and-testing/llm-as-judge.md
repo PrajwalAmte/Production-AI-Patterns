@@ -30,33 +30,17 @@ LLM-as-Judge bridges the gap: it scales like automated checks but evaluates like
 
 ## How It Works
 
-```
-              Candidate Model
-                    │
-                    ▼
-              Model Output
-                    │
-           ┌────────┴────────┐
-           │                 │
-           ▼                 ▼
-     Judge Prompt       Reference Answer
-     (criteria +         (optional)
-      rubric)                │
-           │                 │
-           └────────┬────────┘
-                    │
-                    ▼
-              Judge Model
-              (strong LLM)
-                    │
-                    ▼
-           Structured Score
-           (1-5 + reasoning)
-                    │
-                    ▼
-           Aggregate Metrics
-           & Alert on Drift
-```
+<pre class="mermaid">
+flowchart TD
+    A["Candidate model output"] --> B["Build judge prompt (query + rubric + output)"]
+    C["Reference answer (optional)"] --> B
+    B --> D["Judge model evaluates response"]
+    D --> E["Structured scores + rationale"]
+    E --> F["Aggregate metrics across eval set"]
+    F --> G{"Regression detected?"}
+    G -->|"Yes"| H["Alert team or block release"]
+    G -->|"No"| I["Approve iteration"]
+</pre>
 
 1. **Define evaluation criteria** — Create a rubric with specific dimensions: accuracy, helpfulness, safety, formatting, reasoning quality. Each dimension gets a clear scoring guide.
 2. **Construct the judge prompt** — Include the original query, the candidate's output, the rubric, and optionally a reference answer. Ask the judge to score each dimension and provide reasoning.

@@ -29,31 +29,23 @@ Linear reasoning is a bottleneck for problems that benefit from divide-and-conqu
 
 ## How It Works
 
-```
-         Initial Thought
-              │
-        ┌─────┼─────┐
-        │     │     │
-        ▼     ▼     ▼
-      Branch Branch Branch
-        A     B     C
-        │     │     │
-        ▼     ▼     ▼
-      Score  Score  Score
-        │     │     │
-        └──┬──┘     │
-           │        │
-           ▼        │
-       Merge(A,B)   │
-           │        │
-           └────┬───┘
-                │
-                ▼
-          Refine(merged)
-                │
-                ▼
-          Final Answer
-```
+<pre class="mermaid">
+flowchart TD
+    A["Initial problem"] --> B["Decompose into reasoning branches"]
+    B --> C1["Branch A: generate partial solution"]
+    B --> C2["Branch B: generate partial solution"]
+    B --> C3["Branch C: generate partial solution"]
+    C1 --> D1["Score A"]
+    C2 --> D2["Score B"]
+    C3 --> D3["Score C"]
+    D1 --> E["Aggregate strongest branches"]
+    D2 --> E
+    D3 --> E
+    E --> F["Refine merged result"]
+    F --> G{"Quality threshold met?"}
+    G -->|"No"| B
+    G -->|"Yes"| H["Final answer"]
+</pre>
 
 1. **Decompose** — Break the problem into sub-problems or generate alternative approaches.
 2. **Generate** — For each branch, produce a partial solution using the LLM.

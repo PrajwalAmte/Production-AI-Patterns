@@ -24,20 +24,20 @@ Most production workloads have a highly skewed complexity distribution. Typicall
 
 ## How It Works
 
-```
-Query → Router (classify complexity)
-            │
-    ┌───────┼───────┐
-    │       │       │
-  Simple  Medium  Complex
-    │       │       │
-  GPT-4o   Claude  Claude
-  mini    Sonnet   Opus
-    │       │       │
-    └───────┴───────┘
-            │
-        Response
-```
+<pre class="mermaid">
+flowchart TD
+    A["Query arrives"] --> B["Router classifies complexity"]
+    B --> C{"Complexity tier"}
+    C -->|"Simple"| D["Route to low-cost model"]
+    C -->|"Medium"| E["Route to balanced model"]
+    C -->|"Complex"| F["Route to high-capability model"]
+    D --> G["Return response"]
+    E --> G
+    F --> G
+    G --> H["Track quality and route outcomes"]
+    H --> I["Tune thresholds / retrain router"]
+    I --> B
+</pre>
 
 1. A query arrives at the router.
 2. The router classifies the query into a complexity tier using one of:

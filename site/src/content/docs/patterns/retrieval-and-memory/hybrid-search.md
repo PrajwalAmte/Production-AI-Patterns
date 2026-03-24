@@ -32,28 +32,17 @@ Hybrid search addresses both weaknesses by retrieving candidates from both syste
 
 ## How It Works
 
-```
-         Query
-           │
-     ┌─────┴──────┐
-     │             │
-     ▼             ▼
-Dense Search   Sparse Search
-(embeddings)     (BM25)
-     │             │
-     ▼             ▼
-Top-K dense    Top-K sparse
- results        results
-     │             │
-     └──────┬──────┘
-            │
-     Reciprocal Rank
-        Fusion
-            │
-            ▼
-     Merged Top-K
-       results
-```
+<pre class="mermaid">
+flowchart TD
+    A["Query"] --> B["Dense retrieval (embeddings)"]
+    A --> C["Sparse retrieval (BM25)"]
+    B --> D["Top-K dense results"]
+    C --> E["Top-K sparse results"]
+    D --> F["Reciprocal Rank Fusion (RRF)"]
+    E --> F
+    F --> G["Optional reranking"]
+    G --> H["Merged top-K results"]
+</pre>
 
 1. The query is sent to both retrieval systems in parallel.
 2. Dense retrieval embeds the query and performs approximate nearest neighbor search against the document embeddings.

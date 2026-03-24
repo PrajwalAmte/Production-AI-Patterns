@@ -30,27 +30,18 @@ Vector similarity alone cannot express graph traversals, joins, or multi-hop rea
 
 ## How It Works
 
-```
-         Query
-           │
-     ┌─────┴──────┐
-     │             │
-     ▼             ▼
-  Entity        Vector
-  Extraction    Search
-     │             │
-     ▼             │
-  Knowledge        │
-  Graph            │
-  Traversal        │
-     │             │
-     └──────┬──────┘
-            │
-      Context Assembly
-            │
-            ▼
-       LLM Generation
-```
+<pre class="mermaid">
+flowchart TD
+    A["User query"] --> B["Entity extraction"]
+    A --> C["Vector retrieval"]
+    B --> D["Knowledge graph traversal"]
+    D --> E["Graph facts and relationships"]
+    C --> F["Unstructured passages"]
+    E --> G["Context assembly"]
+    F --> G
+    G --> H["LLM generation"]
+    H --> I["Answer"]
+</pre>
 
 1. **Entity extraction** — Extract entities and intent from the query using NER or an LLM.
 2. **Graph traversal** — Look up extracted entities in the knowledge graph and traverse relationships to gather structured context (neighbors, paths, subgraphs).

@@ -31,36 +31,17 @@ Without input sanitization, every user query is a potential attack surface.
 
 ## How It Works
 
-```
-User Input
-    │
-    ▼
-┌──────────────────┐
-│ Length & Format   │ Reject oversized or malformed input
-│   Validation      │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│  PII Detection   │ Detect and redact emails, SSNs,
-│   & Redaction     │ phone numbers, credit cards
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Injection        │ Classify input for injection
-│  Detection        │ patterns and jailbreaks
-└────────┬─────────┘
-         │
-    ┌────┴─────┐
-    │          │
-  Clean     Flagged
-    │          │
-    ▼          ▼
-  Pass to    Block, log,
-  model      and return
-             safe response
-```
+<pre class="mermaid">
+flowchart TD
+    A["User input"] --> B["Length + format validation"]
+    B --> C{"Valid?"}
+    C -->|"No"| X["Reject with safe error"]
+    C -->|"Yes"| D["PII detection and redaction"]
+    D --> E["Prompt-injection detection"]
+    E --> F{"Flagged as adversarial?"}
+    F -->|"Yes"| G["Block, log incident, return safe response"]
+    F -->|"No"| H["Forward sanitized input to model"]
+</pre>
 
 1. **Format validation**: Check input length, encoding, and structure. Reject inputs that exceed token budgets or contain suspicious encoding.
 2. **PII detection**: Scan for patterns matching personal data (emails, phone numbers, SSNs, credit card numbers). Redact or tokenize detected PII before the input moves forward.

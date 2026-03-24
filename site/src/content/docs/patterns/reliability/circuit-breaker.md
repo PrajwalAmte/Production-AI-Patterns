@@ -32,28 +32,14 @@ Without a circuit breaker, your system continues sending requests to a degraded 
 
 ## How It Works
 
-```
-        ┌──────────┐
-        │  CLOSED   │ Normal operation, monitoring failures
-        └─────┬────┘
-              │ failure rate > threshold
-              ▼
-        ┌──────────┐
-        │   OPEN    │ All requests go to fallback
-        └─────┬────┘
-              │ cooldown expires
-              ▼
-        ┌──────────┐
-        │HALF-OPEN  │ Send probe requests to original provider
-        └─────┬────┘
-              │
-      ┌───────┴───────┐
-      │               │
-   Probes pass     Probes fail
-      │               │
-      ▼               ▼
-   CLOSED           OPEN
-```
+<pre class="mermaid">
+flowchart TD
+    A["Closed state: normal traffic"] -->|"Failure rate breaches threshold"| B["Open state: fail fast"]
+    B --> C["Route traffic to fallback provider"]
+    B -->|"Cooldown expires"| D["Half-open state: send probe requests"]
+    D -->|"Probes pass"| A
+    D -->|"Probes fail"| B
+</pre>
 
 1. **Closed state**: Requests flow normally. The breaker tracks failures (errors, timeouts, latency threshold violations) in a sliding window.
 2. **Trip condition**: When failures in the window exceed the threshold (e.g., 50% failure rate over last 20 requests), the circuit opens.

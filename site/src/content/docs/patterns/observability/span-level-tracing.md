@@ -32,34 +32,20 @@ Traditional APM tools instrument HTTP calls and database queries. They do not in
 
 ## How It Works
 
-```
-Trace: user_query_abc123
-│
-├── Span: input_validation (2ms)
-│
-├── Span: retrieval (145ms)
-│   ├── Span: embedding (35ms)
-│   │   └── tokens: 24
-│   ├── Span: vector_search (89ms)
-│   │   └── results: 12 candidates
-│   └── Span: reranking (21ms)
-│       └── results: 5 selected
-│
-├── Span: prompt_construction (3ms)
-│   └── token_count: 3,847
-│
-├── Span: inference (1,240ms)
-│   ├── model: claude-3-5-sonnet
-│   ├── input_tokens: 3,847
-│   ├── output_tokens: 412
-│   ├── time_to_first_token: 380ms
-│   └── cost: $0.019
-│
-└── Span: output_validation (8ms)
-    └── pii_detected: false
-
-Total: 1,398ms | Cost: $0.019 | Tokens: 4,283
-```
+<pre class="mermaid">
+flowchart TD
+    A["Request received"] --> B["Start trace"]
+    B --> C["Span: input validation"]
+    C --> D["Span: retrieval"]
+    D --> D1["Child span: embedding"]
+    D --> D2["Child span: vector search"]
+    D --> D3["Child span: reranking"]
+    D3 --> E["Span: prompt construction"]
+    E --> F["Span: inference (latency, tokens, cost)"]
+    F --> G["Span: output validation"]
+    G --> H["Export trace to backend"]
+    H --> I["Dashboards, queries, and alerts"]
+</pre>
 
 1. Each pipeline execution creates a trace with a unique ID.
 2. Every significant operation within the pipeline creates a child span.
