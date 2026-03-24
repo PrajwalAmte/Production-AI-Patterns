@@ -33,7 +33,45 @@ export default defineConfig({
         {
           tag: "script",
           attrs: { type: "module" },
-          content: `if(document.querySelector('.mermaid')){const{default:m}=await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');m.initialize({startOnLoad:true,theme:document.documentElement.dataset.theme==='light'?'default':'dark'});}`,
+          content: `
+            let mermaid;
+            const diagramSelector = "pre.mermaid";
+
+            const mermaidTheme = () =>
+              document.documentElement.dataset.theme === "light" ? "default" : "dark";
+
+            async function ensureMermaid() {
+              if (mermaid) return mermaid;
+              const mod = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+              mermaid = mod.default;
+              return mermaid;
+            }
+
+            async function renderMermaidDiagrams() {
+              const diagrams = document.querySelectorAll(diagramSelector);
+              if (!diagrams.length) return;
+
+              try {
+                const m = await ensureMermaid();
+                m.initialize({
+                  startOnLoad: false,
+                  theme: mermaidTheme(),
+                });
+
+                for (const el of diagrams) {
+                  el.removeAttribute("data-processed");
+                }
+
+                await m.run({ querySelector: diagramSelector });
+              } catch (error) {
+                console.error("Mermaid render failed:", error);
+              }
+            }
+
+            document.addEventListener("DOMContentLoaded", renderMermaidDiagrams);
+            document.addEventListener("astro:page-load", renderMermaidDiagrams);
+            document.addEventListener("astro:after-swap", renderMermaidDiagrams);
+          `,
         },
       ],
       sidebar: [

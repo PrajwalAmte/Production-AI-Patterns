@@ -57,7 +57,7 @@ flowchart LR
     F --> P1
     F --> P2
     F --> P3
-    F --> M[("Logs, metrics, and cost budgets")]
+    F --> M["Logs, metrics, and cost budgets"]
 </pre>
 
 1. Application services send inference requests to the gateway using a unified API format.
