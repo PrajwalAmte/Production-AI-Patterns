@@ -5,10 +5,14 @@ template: splash
 hero:
   tagline: "14 named patterns across 10 pillars. Trade-offs, implementation guides, and code examples for every layer of a production AI system."
   actions:
-    - text: Browse All Patterns
-      link: /AI-Engineering-Patterns/patterns/
+    - text: Find your pattern
+      link: /AI-Engineering-Patterns/guides/decision-guide/
       icon: right-arrow
-    - text: Pattern Graph
+    - text: Browse all patterns
+      link: /AI-Engineering-Patterns/patterns/
+      icon: open-book
+      variant: secondary
+    - text: Pattern graph
       link: /AI-Engineering-Patterns/graph/
       icon: star
       variant: minimal
@@ -19,28 +23,13 @@ hero:
 ---
 
 import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+import PersonaPaths from "../../components/PersonaPaths.astro";
 
-## Three ways into the library
+## What are you building?
 
-<CardGrid>
-  <LinkCard
-    title="Browse the catalog"
-    description="Scan the full library when you already know the shape of the system you need."
-    href="/AI-Engineering-Patterns/patterns/"
-  />
-  <LinkCard
-    title="Use the decision guide"
-    description="Answer a few questions and narrow the pattern set before you build."
-    href="/AI-Engineering-Patterns/guides/decision-guide/"
-  />
-  <LinkCard
-    title="See the pattern graph"
-    description="Explore adjacent ideas and dependencies across pillars."
-    href="/AI-Engineering-Patterns/graph/"
-  />
-</CardGrid>
+<PersonaPaths />
 
-## Pick a pillar
+## Explore by pillar
 
 <CardGrid>
   <LinkCard

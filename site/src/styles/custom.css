@@ -185,3 +185,108 @@ body::before {
 .pagination-links .link-title {
   font-size: 1rem;
 }
+
+/* ══════════════════════════════════════════════════
+   Persona path cards – homepage
+══════════════════════════════════════════════════ */
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: 1.25rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+@media (max-width: 860px) {
+  .persona-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.persona-card {
+  border: 1px solid var(--sl-color-gray-5);
+  border-top: 3px solid var(--sl-color-accent);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--sl-color-bg-sidebar);
+  transition: border-top-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.persona-card:hover {
+  border-top-color: var(--accent-cyan);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+}
+
+/* Use div not p – avoids Starlight .sl-markdown-content p margin overrides */
+.persona-label {
+  font-size: 0.975rem;
+  font-weight: 600;
+  color: var(--sl-color-text);
+  margin: 0 0 0.45rem;
+}
+
+.persona-desc {
+  font-size: 0.825rem;
+  color: var(--sl-color-gray-2);
+  line-height: 1.55;
+  margin: 0 0 0.75rem;
+}
+
+.persona-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Spacer pushes CTA to card bottom regardless of content height */
+.persona-spacer {
+  flex: 1;
+  min-height: 0.75rem;
+}
+
+.persona-tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2em 0.55em;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--sl-color-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sl-color-accent) 28%, transparent);
+  color: var(--sl-color-accent-high);
+  text-decoration: none;
+  transition: background 0.12s ease;
+  white-space: nowrap;
+}
+
+.persona-tag:hover {
+  background: color-mix(in srgb, var(--sl-color-accent) 22%, transparent);
+  text-decoration: none;
+}
+
+.persona-cta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--sl-color-accent);
+  text-decoration: none;
+  padding-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.persona-cta::after {
+  content: "→";
+  transition: transform 0.12s ease;
+}
+
+.persona-cta:hover {
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+
+.persona-cta:hover::after {
+  transform: translateX(3px);
+}
