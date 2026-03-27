@@ -63,7 +63,7 @@ The graph is constructed programmatically by an orchestrator, not by the LLM its
 - Scenarios where partial solutions from different approaches can be meaningfully combined.
 - Quality-critical tasks where the cost of multiple LLM calls is justified by output quality improvement.
 
-## When NOT to Use It
+## When not to Use It
 
 - Simple questions with single-step answers. The overhead of graph construction and multiple LLM calls is not justified.
 - Latency-sensitive requests. GoT requires multiple sequential and parallel LLM calls, which adds significant latency.

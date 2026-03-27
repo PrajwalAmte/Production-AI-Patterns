@@ -56,7 +56,7 @@ flowchart TD
 - You have a stronger model available as the judge (e.g., GPT-4o judging GPT-4o-mini outputs).
 - You want to scale evaluation across hundreds of test cases that would take human reviewers days.
 
-## When NOT to Use It
+## When not to Use It
 
 - The candidate model is as strong or stronger than any available judge. The judge cannot reliably evaluate outputs it could not produce itself. Using GPT-4o-mini to judge GPT-4o outputs produces unreliable scores.
 - Your evaluation criteria are purely objective and can be checked programmatically (exact match, JSON schema validation, code compilation). Deterministic checks are cheaper and more reliable.

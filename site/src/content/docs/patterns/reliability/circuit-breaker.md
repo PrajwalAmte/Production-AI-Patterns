@@ -56,7 +56,7 @@ For LLMs specifically, the failure definition must include latency breaches and 
 - You need to protect user experience during provider issues.
 - Your system makes enough requests to detect degradation statistically (at least tens of requests per minute).
 
-## When NOT to Use It
+## When not to Use It
 
 - You have only one LLM provider with no fallback. A circuit breaker without a fallback just fails faster — useful for protecting downstream systems from cascading failures, but not for maintaining service.
 - Your request volume is too low to detect degradation reliably (fewer than 10 requests per minute). The sliding window will produce noisy signals.

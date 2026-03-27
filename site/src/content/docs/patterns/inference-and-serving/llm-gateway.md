@@ -74,7 +74,7 @@ flowchart LR
 - You need consistent logging and tracing across all model calls.
 - You want to swap providers or models without changing application code.
 
-## When NOT to Use It
+## When not to Use It
 
 - You have a single service making occasional LLM calls with one provider. The overhead of running a gateway is not justified until you have multiple callers or need to switch providers.
 - Your application is a prototype or proof-of-concept. Direct API calls are fine for validation. Add the gateway when you move to production.

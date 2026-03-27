@@ -58,7 +58,7 @@ flowchart TD
 - You expose LLM functionality to external or untrusted users.
 - Compliance requirements (GDPR, HIPAA, PCI-DSS) mandate input data handling controls.
 
-## When NOT to Use It
+## When not to Use It
 
 - The system only processes internal, pre-validated data that never includes user input (batch processing of structured records). Sanitization adds latency to a path that does not need it.
 - You use structured input exclusively (API calls with typed parameters, not free text). Schema validation is more appropriate than text-level sanitization.

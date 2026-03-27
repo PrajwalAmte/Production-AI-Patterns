@@ -47,7 +47,7 @@ F --> G["Return response"]
 - Any workload with high query repetition and tolerance for slightly stale answers.
 - Cost reduction is a priority and sub-second latency is desirable for common queries.
 
-## When NOT to Use It
+## When not to Use It
 
 - Queries depend on real-time data that changes between requests (stock prices, live inventory). Cached responses will be stale and wrong.
 - Every query is genuinely unique (code generation with different specifications, creative writing with unique prompts). Hit rates will be near zero, and you pay the embedding cost on every request for no benefit.

@@ -58,7 +58,7 @@ flowchart TD
 - Analytics or reporting requires accurate entity counts across heterogeneous sources.
 - You have long-tail entities (niche products, internal tools, domain-specific terms) that embedding models have not seen.
 
-## When NOT to Use It
+## When not to Use It
 
 - Entities have reliable unique identifiers across all sources (UUIDs, standardized codes). Simple join-on-ID is cheaper and more accurate.
 - The entity space is small and manually curated. A lookup table or alias mapping is simpler and more maintainable.

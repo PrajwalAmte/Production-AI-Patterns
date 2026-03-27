@@ -59,7 +59,7 @@ The knowledge graph can be prebuilt from documents using an entity extraction pi
 - You need explainable retrieval — the graph traversal path shows why certain context was included.
 - Standard RAG recall is poor for relationship queries despite good chunk quality.
 
-## When NOT to Use It
+## When not to Use It
 
 - Queries are simple factual lookups that vector search handles well. GraphRAG adds significant complexity for marginal improvement on single-hop questions.
 - You do not have clean, structured data to build a knowledge graph from. Garbage-in-garbage-out applies even more to graphs than to vector stores.

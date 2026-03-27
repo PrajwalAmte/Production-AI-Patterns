@@ -63,7 +63,7 @@ Where $R$ is the set of result lists, $\text{rank}_r(d)$ is the rank of document
 - You are building a RAG system and want the highest baseline retrieval quality before investing in more complex approaches.
 - Your evaluation shows that neither dense nor sparse retrieval alone achieves acceptable recall.
 
-## When NOT to Use It
+## When not to Use It
 
 - Your queries and documents are pure natural language with no specialized terminology. Dense retrieval alone may be sufficient, and the added complexity of hybrid search provides marginal improvement.
 - Your corpus is extremely small (under 1,000 documents). At small scale, the difference between retrieval methods is negligible, and a simple embedding search is adequate.

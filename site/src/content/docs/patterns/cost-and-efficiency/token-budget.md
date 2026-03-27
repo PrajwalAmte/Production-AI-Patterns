@@ -67,7 +67,7 @@ flowchart TD
 - You have experienced cost spikes from pathological inputs or runaway context accumulation.
 - You need to prevent hard failures from exceeding model context windows.
 
-## When NOT to Use It
+## When not to Use It
 
 - All your requests are short, fixed-format prompts with predictable token counts. Budgeting adds complexity to a system that does not need it.
 - You are doing long-context tasks where the value comes from processing the full input (document summarization of a specific document, code analysis of an entire codebase). Trimming destroys the value of the task.

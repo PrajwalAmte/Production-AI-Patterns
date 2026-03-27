@@ -58,7 +58,7 @@ flowchart LR
 - You have experienced incidents where lack of model documentation delayed resolution.
 - You are building trust with customers or partners who ask "how does your AI work?"
 
-## When NOT to Use It
+## When not to Use It
 
 - You are using a third-party API (OpenAI, Anthropic) without any fine-tuning or customization. The provider publishes their own model documentation. Your responsibility is documenting your system's use of the model, not the model itself.
 - You are in rapid experimentation with throwaway models that will never reach production. The overhead of full documentation is not justified for models with a lifespan of days.

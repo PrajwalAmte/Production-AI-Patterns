@@ -62,7 +62,7 @@ flowchart TD
 - You need to enforce freshness, completeness, or type guarantees on data feeding models or retrieval systems.
 - Multiple consumers depend on the same data source and need a shared quality bar.
 
-## When NOT to Use It
+## When not to Use It
 
 - You own both the producer and consumer pipelines and they change together. In this case, schema enforcement in your own codebase is sufficient — a formal contract adds ceremony without value.
 - Your data sources are ephemeral or experimental. Contracts assume stability. If the schema changes weekly during rapid iteration, contracts become a bottleneck.

@@ -55,7 +55,7 @@ flowchart TD
 - Cost reduction of 50%+ would meaningfully change the economics of your product.
 - You can tolerate occasional quality misses on misrouted queries (with fallback to a better model).
 
-## When NOT to Use It
+## When not to Use It
 
 - All your queries are roughly the same complexity (e.g., a specialized code generation tool where every query is complex). The router adds latency with no cost savings.
 - You cannot measure output quality automatically. Without quality feedback, you cannot validate that cheaper models are performing adequately.

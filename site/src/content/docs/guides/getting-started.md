@@ -40,14 +40,14 @@ Every pattern follows the same structure:
 | The Problem It Solves | What breaks without this pattern |
 | How It Works | Step-by-step mechanism with diagrams |
 | When to Use It | Specific conditions and workload types |
-| When NOT to Use It | Explicit anti-use-cases |
+| When not to Use It | Explicit anti-use-cases |
 | Trade-offs | 2-4 honest trade-offs |
 | Implementation Example | Minimal working code snippet |
 | Tool Landscape | Tools that implement or support the pattern |
 | Related Patterns | Links to adjacent patterns |
 | Further Reading | 2-4 high-quality external references |
 
-The **When NOT to Use It** section is the most important. It is what makes this resource opinionated rather than encyclopedic.
+The **When not to Use It** section is the most important. It is what makes this resource opinionated rather than encyclopedic.
 
 ## Pattern Maturity
 

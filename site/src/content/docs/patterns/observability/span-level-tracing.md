@@ -61,7 +61,7 @@ flowchart TD
 - You need to answer questions like "why was this response slow?" or "which step consumed the most tokens?"
 - You are optimizing pipeline performance and need data on where time and tokens are actually spent.
 
-## When NOT to Use It
+## When not to Use It
 
 - Your AI integration is a single, direct LLM API call with no pipeline. A single API call does not benefit from span-level decomposition. Request-level metrics are sufficient.
 - You are in early prototyping where the pipeline changes daily. Instrumentation code becomes maintenance overhead that slows iteration. Add tracing when the pipeline stabilizes.
