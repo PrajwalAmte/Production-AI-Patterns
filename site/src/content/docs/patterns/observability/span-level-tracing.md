@@ -74,6 +74,23 @@ flowchart TD
 3. **Schema maintenance** — As the pipeline evolves, span names and attributes must be kept consistent. Stale or renamed spans create gaps in dashboards and alerts.
 4. **Privacy considerations** — Traces may capture prompt content and model outputs. Ensure sensitive data is redacted before export to the trace backend.
 
+## Failure Modes
+
+### Span Cardinality Explosion
+**Trigger**: Dynamic span names (e.g., including user IDs, query text, or tool names in span identifiers) create unbounded unique span types.
+**Symptom**: Trace backend storage costs spike. Dashboards become unusable because every span is "unique." Aggregation and alerting break because there are no stable span groups to monitor.
+**Mitigation**: Enforce a fixed span name taxonomy in code (e.g., `retrieve`, `generate`, `rerank`). Pass dynamic values as span attributes, not span names.
+
+### Missing Spans on Async or Parallel Steps
+**Trigger**: Pipeline steps that run in parallel (async retrieval, concurrent tool calls) are not properly linked to the parent trace context.
+**Symptom**: Traces show gaps — the parent span completes but child spans are either missing or appear as orphaned root spans. Latency analysis underreports actual work.
+**Mitigation**: Explicitly propagate trace context into async workers and thread pools. Test tracing specifically for parallel pipeline paths.
+
+### PII Leakage in Trace Attributes
+**Trigger**: Span attributes include full prompt text or user queries without redaction, and traces are exported to a shared or third-party backend.
+**Symptom**: Sensitive user data is visible in trace dashboards accessible to multiple teams or stored in a third-party service, violating privacy policies.
+**Mitigation**: Apply a redaction filter in the trace exporter pipeline. Only store prompt hashes or truncated previews by default. Full content should require explicit opt-in with access controls.
+
 ## Implementation Example
 
 ```python

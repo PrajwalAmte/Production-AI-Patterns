@@ -71,6 +71,23 @@ flowchart TD
 3. **Transitive errors** — Graph-based approaches propagate errors: one bad edge can merge two unrelated entity clusters.
 4. **Maintenance cost** — New data sources require re-running or incrementally updating the resolution pipeline.
 
+## Failure Modes
+
+### Transitive Merge Cascade
+**Trigger**: A single incorrect edge links two unrelated entity clusters, and community detection merges them into one super-cluster.
+**Symptom**: Hundreds of unrelated entities share a canonical record. Downstream queries get nonsensical answers because the "entity" now represents multiple real-world things.
+**Mitigation**: Set a maximum cluster size threshold. Flag clusters that grow beyond expected bounds for manual review. Use edge confidence scores and remove low-confidence edges before community detection.
+
+### Blocking Function Misses Cross-Script Entities
+**Trigger**: The blocking function uses first-N characters or phonetic hashing, but entity mentions span multiple scripts or languages ("München" vs. "Munich").
+**Symptom**: Valid matches are never generated as candidate pairs because they fall into different blocks. Recall drops silently for multilingual corpora.
+**Mitigation**: Use embedding-based blocking that captures semantic similarity across languages. Add transliteration normalization before blocking.
+
+### Stale Canonical After New Source Ingestion
+**Trigger**: A new data source provides better-quality entity data than the original canonical, but the pipeline always preserves the first-seen canonical.
+**Symptom**: Canonical records remain low-quality even though superior data exists in the cluster. Retrieval surfaces the weaker representation.
+**Mitigation**: Re-evaluate canonical selection when new sources are added, using a quality scoring function (completeness, recency, source authority). Allow canonical promotion.
+
 ## Implementation Example
 
 ```python

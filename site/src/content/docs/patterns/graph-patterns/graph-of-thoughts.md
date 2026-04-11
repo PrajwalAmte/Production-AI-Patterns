@@ -77,6 +77,23 @@ The graph is constructed programmatically by an orchestrator, not by the LLM its
 3. **Orchestration complexity** — Building the graph, managing state, handling failures at individual nodes, and implementing the scoring/aggregation logic requires substantial engineering.
 4. **Diminishing returns** — For many tasks, Tree-of-Thought or even simple best-of-N sampling achieves most of GoT's quality improvement at lower complexity.
 
+## Failure Modes
+
+### Scoring Function Misalignment
+**Trigger**: The scoring LLM evaluates thought nodes on surface-level quality (fluency, length) rather than logical correctness.
+**Symptom**: The graph selects confidently wrong branches over tentative but correct ones. Final merged output inherits errors from the highest-scored (but incorrect) paths.
+**Mitigation**: Design scoring prompts that explicitly evaluate factual accuracy and logical consistency, not just prose quality. Validate the scorer against a held-out set of known-correct and known-incorrect intermediate steps.
+
+### Merge Step Drops Key Information
+**Trigger**: The aggregation prompt that merges solutions from multiple branches has a limited context window and must summarize.
+**Symptom**: Critical details from individual branches are lost during merging. The final answer is syntactically coherent but missing nuances that individual branches captured.
+**Mitigation**: Use structured extraction from each branch before merging (key claims, numerical results, constraints). Merge from structured data, not raw text.
+
+### Decomposition Explosion
+**Trigger**: The decomposition step splits a problem into too many sub-problems, each of which branches further.
+**Symptom**: Token costs and latency grow exponentially. Many branches explore trivial or redundant variations. Most of the compute is wasted.
+**Mitigation**: Limit branching factor and graph depth. Score sub-problems for independence — discard those that are redundant or trivially solvable. Set a total token budget for the entire GoT execution.
+
 ## Implementation Example
 
 ```python

@@ -75,6 +75,23 @@ flowchart TD
 3. **False sense of security** — A contract that validates schema but not data distribution gives confidence without catching the most common issues (value drift, null rate changes).
 4. **Adoption challenge** — Contracts only work if producers actually run the validations. Without organizational commitment, they become ignored documentation.
 
+## Failure Modes
+
+### Schema Passes, Distribution Shifts
+**Trigger**: Upstream data changes in value distribution (e.g., a field that was 5% null becomes 40% null) while still passing schema validation.
+**Symptom**: Model quality degrades gradually. The contract reports green because types and required fields are correct, but the data is statistically different from what the model expects.
+**Mitigation**: Add distribution-level assertions to contracts (null rate bounds, value range checks, cardinality thresholds). Use statistical tests, not just schema checks.
+
+### Contract Versioning Deadlock
+**Trigger**: A producer needs a breaking schema change, but multiple consumers depend on the current version with different migration timelines.
+**Symptom**: Schema evolution stalls. Producer ships the change anyway (breaking consumers) or waits indefinitely (blocking their own roadmap). Either outcome damages trust in the contract system.
+**Mitigation**: Define a deprecation policy upfront (e.g., old version supported for N weeks). Support running two schema versions in parallel during migration. Automate consumer compatibility checks.
+
+### False Security from Selective Enforcement
+**Trigger**: Contracts are defined but only enforced in CI — not at runtime in the data pipeline.
+**Symptom**: A data issue that the contract would catch reaches production because the runtime path does not validate. Teams trust the contract and skip other defensive checks.
+**Mitigation**: Enforce contracts at the pipeline ingestion boundary, not just in tests. Treat a contract violation in production as a P1 alert, not a logged warning.
+
 ## Implementation Example
 
 ```python

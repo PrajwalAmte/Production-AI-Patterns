@@ -73,6 +73,23 @@ The knowledge graph can be prebuilt from documents using an entity extraction pi
 3. **Staleness risk** — The knowledge graph can drift from source documents if the extraction pipeline is not run on every update.
 4. **Infrastructure overhead** — Requires a graph database in addition to the vector store. Two systems to maintain, monitor, and back up.
 
+## Failure Modes
+
+### Entity Extraction Hallucination
+**Trigger**: The extraction pipeline (often an LLM) hallucinates entities or relationships during knowledge graph construction.
+**Symptom**: The graph contains phantom nodes and edges. Queries that traverse these edges return confident but fabricated answers grounded in non-existent relationships.
+**Mitigation**: Validate extracted triples against source documents. Use extraction confidence scores and discard low-confidence triples. Periodically audit random graph subsets.
+
+### Over-Traversal on Vague Queries
+**Trigger**: A broad or ambiguous query causes the graph traversal to fan out through many hops, pulling in loosely related context.
+**Symptom**: Context window fills with tangentially related graph output. The LLM produces verbose, unfocused answers. Latency spikes from deep traversal.
+**Mitigation**: Set a maximum traversal depth and node limit per query. Score relevance at each hop and prune low-relevance paths. Fall back to vector search for queries that do not map cleanly to entity lookups.
+
+### Graph Staleness After Source Update
+**Trigger**: Source documents are updated but the knowledge graph extraction pipeline runs on a schedule (daily, weekly) rather than in real-time.
+**Symptom**: Graph contains outdated relationships. A vector search might return updated content, but the graph path retrieves stale context, creating contradictions in the prompt.
+**Mitigation**: Track source document versions in graph metadata. Flag graph nodes whose source has been modified since extraction. Prioritize re-extraction of flagged subgraphs.
+
 ## Implementation Example
 
 ```python

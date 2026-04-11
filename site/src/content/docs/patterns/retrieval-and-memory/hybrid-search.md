@@ -77,6 +77,23 @@ Where $R$ is the set of result lists, $\text{rank}_r(d)$ is the rank of document
 3. **Increased indexing cost** — Documents must be both embedded (compute-intensive) and tokenized for BM25 (I/O-intensive). Indexing takes longer and uses more storage.
 4. **Diminishing returns with reranking** — If you add a reranking step after hybrid search, the reranker often compensates for weaknesses in individual retrieval methods, reducing the marginal benefit of hybrid over dense-only + reranker.
 
+## Failure Modes
+
+### Index Synchronization Lag
+**Trigger**: Document updates are applied to the vector store but the keyword index (or vice versa) lags behind due to different indexing pipelines.
+**Symptom**: Hybrid results become inconsistent — a query returns a document from one index that is missing or outdated in the other. Fusion scores are skewed because one result list is stale.
+**Mitigation**: Use a single ingestion pipeline that writes to both indices atomically. If that is not possible, add a freshness check that flags results where the two indices disagree on document version.
+
+### Fusion Weight Mismatch
+**Trigger**: The dense-vs-sparse weight ratio was tuned on one query distribution, but traffic shifts (new user segment, new content type).
+**Symptom**: Retrieval quality drops for one class of queries. Keyword-heavy queries underperform if dense weight dominates, or vice versa. The drop is hard to detect because overall metrics average out.
+**Mitigation**: Monitor recall per query type, not just aggregate. Consider query-adaptive fusion weights — use a lightweight classifier to adjust the ratio based on query characteristics (length, presence of jargon).
+
+### Embedding-Keyword Disagreement on Ambiguous Queries
+**Trigger**: A query like "Python" matches programming documentation via embeddings but snake-related content via keyword.
+**Symptom**: Fusion surfaces irrelevant results from the weaker method that dilute the top-k context window.
+**Mitigation**: Apply a minimum relevance threshold per method before fusion. Results below the threshold from either method are excluded from the merge.
+
 ## Implementation Example
 
 ```python

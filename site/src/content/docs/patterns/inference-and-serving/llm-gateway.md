@@ -87,6 +87,23 @@ flowchart LR
 3. **Operational complexity** — Another service to deploy, monitor, and maintain. Not free for small teams.
 4. **Feature lag** — New provider features (streaming modes, tool calling changes) require gateway updates before applications can use them.
 
+## Failure Modes
+
+### Gateway Becomes the Bottleneck
+**Trigger**: Gateway is deployed as a single instance or with insufficient scaling, and traffic exceeds its capacity.
+**Symptom**: All LLM calls across all services experience increased latency or timeouts simultaneously, even though the underlying providers are healthy.
+**Mitigation**: Deploy the gateway with horizontal auto-scaling. Add health checks that include throughput metrics, not just liveness. Load-test the gateway independently from providers.
+
+### Silent Credential Rotation Failure
+**Trigger**: API key rotation on one provider succeeds but the gateway reads cached credentials.
+**Symptom**: Requests to a single provider start failing with 401/403 errors. Other providers work fine. Teams blame the provider before checking the gateway.
+**Mitigation**: Gateway should validate credentials on rotation and emit a specific alert on authentication failures distinct from rate-limit or model errors.
+
+### Logging Amplifies Costs
+**Trigger**: Verbose logging is enabled (full prompts and completions) without sampling or size limits.
+**Symptom**: Log storage costs approach or exceed LLM inference costs. Log ingestion pipelines lag, causing alert delays.
+**Mitigation**: Log prompt/completion hashes by default; store full payloads only for sampled requests or flagged interactions. Set retention policies.
+
 ## Implementation Example
 
 ```python

@@ -80,6 +80,23 @@ flowchart TD
 3. **User experience** — In conversation scenarios, summarizing or dropping history changes what the model "remembers." Users may experience inconsistent context awareness.
 4. **Over-budgeting** — Setting budgets too conservatively wastes context window capacity. Setting them too loosely defeats the purpose.
 
+## Failure Modes
+
+### Tokenizer Mismatch
+**Trigger**: Budget enforcement uses a different tokenizer than the target model (e.g., counting with `tiktoken` cl100k_base but sending to a model that uses a different tokenizer).
+**Symptom**: Requests are either trimmed too aggressively (losing useful context) or not trimmed enough (exceeding the model's actual limit and causing API errors).
+**Mitigation**: Use the exact tokenizer for the target model. When routing across models, re-count tokens per model. Abstract token counting behind the model router.
+
+### Context Trimming Removes Critical Information
+**Trigger**: Budget enforcement truncates retrieved context by position (e.g., drop the last chunks), and the most relevant information happens to be at the end.
+**Symptom**: Model quality drops on queries where the answer was in the trimmed portion. The system appears to work but gives wrong answers on a subset of queries.
+**Mitigation**: Trim by relevance score, not position. Sort context by retrieval score and trim the lowest-scored chunks first. Log what was trimmed for debugging.
+
+### Budget Exhausted by System Prompt
+**Trigger**: System prompt, few-shot examples, and tool definitions consume most of the token budget before user context is added.
+**Symptom**: Almost no retrieved context fits within budget. Responses are generic or hallucinated because the model has instructions but no grounding data.
+**Mitigation**: Account for system prompt tokens as a fixed overhead before allocating the retrieval budget. Alert when system prompt exceeds a predefined percentage of the total context window.
+
 ## Implementation Example
 
 ```python

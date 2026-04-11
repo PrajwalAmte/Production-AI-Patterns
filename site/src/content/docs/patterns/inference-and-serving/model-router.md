@@ -69,6 +69,23 @@ flowchart TD
 3. **Maintenance burden** — As models evolve and new tiers appear, the router needs updating. Model capabilities change with each release.
 4. **Quality monitoring dependency** — The router is only as good as your ability to detect when it routes incorrectly. Requires investment in evaluation and feedback loops.
 
+## Failure Modes
+
+### Complexity Classifier Drift
+**Trigger**: The query distribution changes (new features, new user segments) but the complexity classifier was trained on historical data.
+**Symptom**: Increasing number of complex queries routed to cheap models. Quality scores drop gradually — hard to notice without per-tier monitoring.
+**Mitigation**: Monitor quality scores per routing tier, not just overall. Retrain or recalibrate the classifier on a rolling window of recent queries.
+
+### Cheap Model Confidently Wrong
+**Trigger**: A simple-looking query actually requires world knowledge or nuanced reasoning that the cheap model lacks.
+**Symptom**: The router sends the query to the small model, which returns a confident but incorrect answer. No fallback triggers because the response looks well-formed.
+**Mitigation**: Sample-audit cheap-tier outputs with a stronger model or LLM-as-Judge. Add a confidence threshold where the cheap model's uncertainty triggers escalation.
+
+### Tier Collapse Under Load
+**Trigger**: Rate limits hit on the preferred model tier, causing the router to cascade all traffic to a single fallback tier.
+**Symptom**: Either quality drops (all traffic on cheap model) or costs spike (all traffic on expensive model). The router stops providing value.
+**Mitigation**: Implement per-tier rate-limit awareness and queue management. Alert when a tier absorbs abnormal traffic share.
+
 ## Implementation Example
 
 ```python

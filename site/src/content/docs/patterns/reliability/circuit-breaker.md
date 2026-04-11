@@ -69,6 +69,23 @@ For LLMs specifically, the failure definition must include latency breaches and 
 3. **Recovery delay** — The cooldown period means you continue using the fallback even after the provider recovers. Shorter cooldowns risk re-tripping on transient issues.
 4. **Complexity** — Adds state management to your inference path. In distributed systems, circuit state must be shared across instances or each instance manages its own state.
 
+## Failure Modes
+
+### Flash Trip on Latency Spikes
+**Trigger**: A momentary latency spike (provider garbage collection, network jitter) causes enough requests to breach the timeout threshold.
+**Symptom**: Circuit opens unnecessarily, routing all traffic to the fallback model. Users experience a quality downgrade for the entire cooldown period even though the primary recovered in seconds.
+**Mitigation**: Use a two-signal approach: require both error rate AND latency percentile to breach thresholds before opening. Add a "half-open" probe phase that tests the primary before committing to fallback.
+
+### Fallback Avalanche
+**Trigger**: Primary provider goes down, causing a circuit open. All traffic shifts to the fallback, which is not provisioned for full load.
+**Symptom**: Fallback provider also degrades or rate-limits under the sudden traffic surge. Both paths are now unhealthy.
+**Mitigation**: Load-test the fallback at full production volume. Implement request shedding with graceful degradation (queue, retry with backoff, or partial service) rather than hard-shifting 100% of traffic instantly.
+
+### Split-Brain Circuit State
+**Trigger**: Multiple gateway instances each maintain their own circuit state without synchronization.
+**Symptom**: Some instances route to the primary (circuit closed) while others route to the fallback (circuit open). Inconsistent user experience and difficulty debugging.
+**Mitigation**: Use shared state (Redis, distributed cache) for circuit status, or accept per-instance circuits but ensure each has sufficient traffic for statistically valid failure detection.
+
 ## Implementation Example
 
 ```python

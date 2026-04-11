@@ -17,6 +17,8 @@ description: Key terms used throughout AI Engineering Patterns.
 
 **Canary Deployment** — Releasing a new model or prompt version to a small subset of traffic before full rollout. Limits blast radius of quality regressions.
 
+**Cascading Context Assembly** — A pattern that dynamically assembles context from multiple tiers (cache, metadata, vector store, live retrieval) in order of increasing cost and latency. Stops as soon as a confidence threshold is met, avoiding unnecessary expensive retrievals.
+
 **Chain-of-Thought (CoT)** — Prompting strategy that asks the model to show intermediate reasoning steps. Improves accuracy on complex tasks at the cost of additional output tokens.
 
 **Chunking** — Splitting documents into smaller segments for embedding and retrieval. Chunk size and strategy directly affect retrieval quality.
@@ -36,6 +38,8 @@ description: Key terms used throughout AI Engineering Patterns.
 ## E
 
 **Embedding** — A fixed-size vector representation of text (or other data) in a continuous vector space. Similar meanings map to nearby vectors.
+
+**Embedding Drift** — Gradual or sudden changes in the distribution of embedding vectors over time, caused by new vocabulary, shifting user behaviour, or model updates. Detected by monitoring statistical properties of embedding populations.
 
 **Eval Dataset** — A curated set of input-output pairs used to measure model or system quality. Distinct from training data.
 
@@ -95,6 +99,8 @@ description: Key terms used throughout AI Engineering Patterns.
 
 **Policy-as-Code** — Encoding compliance rules as machine-checkable assertions that run automatically in CI/CD pipelines.
 
+**Prompt Canary Deployment** — A governance pattern that routes a small percentage of live traffic to a new prompt version while the majority continues on the current version. Automated quality metrics decide whether to promote or roll back the candidate.
+
 **Prompt Injection** — An attack where malicious instructions are embedded in user input to manipulate model behavior. The LLM equivalent of SQL injection.
 
 **Prompt Regression** — When changes to prompts, system instructions, or models cause quality to degrade on previously passing test cases.
@@ -105,9 +111,13 @@ description: Key terms used throughout AI Engineering Patterns.
 
 **Reranking** — A two-stage retrieval approach where a first-pass retriever returns candidates and a second-pass model scores and reorders them for relevance.
 
+**Retrieval Freshness Watermark** — A metadata-driven pattern that stamps every retrieved chunk with a freshness timestamp and TTL, allowing the retrieval layer to filter or flag stale content before it enters the LLM context.
+
 ## S
 
 **Semantic Caching** — Caching LLM responses indexed by the semantic meaning of queries rather than exact string matches. Serves similar (not just identical) queries from cache.
+
+**Semantic Deduplication** — A data-quality pattern that detects and merges near-duplicate records using embedding similarity rather than exact-match keys. Prevents redundant context from inflating retrieval results and token costs.
 
 **Shadow Mode** — Running a new model in parallel on live traffic without serving its outputs to users. Used to compare quality before switching.
 
@@ -126,6 +136,8 @@ description: Key terms used throughout AI Engineering Patterns.
 **Token** — The fundamental unit of text that LLMs process. A token is roughly 3/4 of a word in English. Costs are typically measured per token.
 
 **Token Budget** — A hard limit on the number of input and/or output tokens per request. Prevents unbounded costs from long contexts or verbose outputs.
+
+**Tool Output Firewall** — A security pattern that validates, sanitizes, and constrains data returned by external tools before it re-enters the LLM context window. Prevents indirect prompt injection and data exfiltration through tool results.
 
 **Train/Serve Skew** — Differences between the data or features used during model training and those available during serving. A common source of production quality issues.
 

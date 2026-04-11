@@ -61,6 +61,23 @@ F --> G["Return response"]
 3. **Stale responses** — Cached answers may be outdated if the underlying knowledge changes. TTL must be tuned to the data freshness requirements.
 4. **Cache poisoning** — A low-quality response that gets cached will be served to many users. Consider caching only responses that pass quality checks.
 
+## Failure Modes
+
+### Semantic False Match
+**Trigger**: Two queries are semantically similar according to embeddings but require different answers ("cancel my subscription" vs. "can I cancel my flight?").
+**Symptom**: Users receive cached answers meant for a different intent. Complaints about wrong answers that are hard to reproduce because they depend on cache state.
+**Mitigation**: Include system prompt hash and key context variables in the cache key — not just query similarity. Add a minimum exact-token-overlap threshold alongside cosine similarity.
+
+### Stale Cache Serving Outdated Facts
+**Trigger**: Underlying knowledge changes (product price, policy update) but cached responses still contain old information.
+**Symptom**: Users get confidently delivered wrong facts. The issue is intermittent — some users get the cache hit, others get fresh (correct) responses.
+**Mitigation**: Set TTLs based on content volatility. Implement cache invalidation hooks tied to knowledge base updates. Tag cached entries with source document versions.
+
+### Cache Hit Rate Collapse
+**Trigger**: Embedding model update, prompt template change, or system prompt modification shifts the embedding space.
+**Symptom**: Cache hit rate drops to near zero overnight. Costs spike because every query goes to the LLM. The cache becomes pure overhead.
+**Mitigation**: Monitor hit rate as a key metric with alerting threshold. On embedding model changes, warm the cache with historical queries or accept a grace period.
+
 ## Implementation Example
 
 ```python

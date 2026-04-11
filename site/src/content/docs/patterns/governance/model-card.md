@@ -71,6 +71,23 @@ flowchart LR
 3. **Scope ambiguity** — For systems using multiple models (a router + multiple LLMs + an embedding model + a reranker), it is unclear whether each component needs its own card or the system gets one card. Both approaches have merits.
 4. **Honest limitations** — Documenting known failure modes requires a culture that rewards honesty over optimism. Teams may downplay limitations to avoid blocking deployment.
 
+## Failure Modes
+
+### Card Drift from Reality
+**Trigger**: The model is updated (fine-tuned, retrained, or swapped for a new version) but the model card is not updated alongside it.
+**Symptom**: Teams make deployment decisions based on stale documentation. Known limitations of the new version are not communicated. Incidents occur that the card does not mention.
+**Mitigation**: Tie model card updates to the model release process — make card revision a required gate in the deployment pipeline. Automate what you can (metrics, dates, version numbers).
+
+### Checkbox Culture
+**Trigger**: Model cards become a compliance requirement that teams fill out mechanically to pass review gates.
+**Symptom**: Cards are filled with generic language ("model may produce inaccurate outputs") that applies to any model. No team-specific limitations, no real evaluation data. The card adds no actual value.
+**Mitigation**: Require specific eval results with test datasets, not just prose descriptions. Reject cards that do not include measured failure rates on defined test suites.
+
+### Missing Downstream Context
+**Trigger**: The card documents the model in isolation but does not describe how it is used in the system (what inputs it receives, what actions are gated on its output).
+**Symptom**: A model rated safe for one use case is deployed in a higher-risk context. The card said "not recommended for medical use" but the downstream team did not read — or did not know their pipeline feeds a medical product.
+**Mitigation**: Include a "Known Deployments" section that lists active consumers. Require consuming teams to acknowledge the card's limitation section before integration.
+
 ## Implementation Example
 
 Model card as a structured YAML document stored alongside the model artifact:

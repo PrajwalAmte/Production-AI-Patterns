@@ -70,6 +70,23 @@ flowchart TD
 3. **Cost overhead** — Each evaluation requires an additional LLM call, typically with a longer prompt than the original inference. Budget 20-40% additional inference cost for comprehensive evaluation.
 4. **Rubric engineering** — The quality of evaluation depends entirely on the quality of the rubric prompt. Vague criteria produce inconsistent scores. Building a reliable rubric takes iteration.
 
+## Failure Modes
+
+### Judge-Candidate Collusion
+**Trigger**: The judge model and candidate model are from the same family or share training biases.
+**Symptom**: The judge consistently rates outputs from its own family higher than outputs from other models, regardless of objective quality. Evaluation appears to show your model is great — until humans disagree.
+**Mitigation**: Use judges from a different model family than the candidate. Cross-validate with human evaluation on a sample. Track judge-human agreement rate as a meta-metric.
+
+### Rubric Ambiguity Inflates Scores
+**Trigger**: Evaluation rubric uses subjective terms ("good," "helpful," "appropriate") without concrete criteria.
+**Symptom**: All scores cluster near the top of the scale. The judge rarely gives low marks because the rubric does not define what failure looks like. The metric loses discriminative power.
+**Mitigation**: Define each score level with explicit examples ("A score of 1 means..."). Include negative examples in the rubric. Test on known-bad outputs to verify the rubric produces low scores where expected.
+
+### Position Bias Skewing A/B Comparisons
+**Trigger**: In pairwise evaluation (A vs. B), the judge consistently favors whichever response appears first in the prompt.
+**Symptom**: A/B test results depend on presentation order rather than actual quality. Leads to incorrect conclusions about which model or prompt is better.
+**Mitigation**: Run every comparison in both orders (A-B and B-A) and average. Discard cases where the judge disagreed with itself. Report the self-consistency rate.
+
 ## Implementation Example
 
 ```python

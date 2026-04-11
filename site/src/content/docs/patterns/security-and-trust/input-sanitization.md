@@ -71,6 +71,23 @@ flowchart TD
 3. **Arms race** — Injection techniques evolve continuously. Pattern-based detection has a short half-life as attackers find new phrasings. Classifier models require ongoing retraining.
 4. **Incomplete coverage** — No sanitization layer catches everything. Sophisticated indirect injection (through retrieved documents, tool outputs, or multi-turn context manipulation) bypasses input-level checks.
 
+## Failure Modes
+
+### Regex-Based Detection Bypass
+**Trigger**: Attacker uses Unicode homoglyphs, zero-width characters, or language switching to evade pattern-based injection detection.
+**Symptom**: Injection passes all regex filters and reaches the model. The attack is only discovered post-hoc through output monitoring or user reports.
+**Mitigation**: Normalize Unicode before pattern matching. Layer a classifier-based detector on top of regex rules. Treat pattern matching as the first line of defense, not the only one.
+
+### Overzealous PII Detection
+**Trigger**: PII detection model flags domain-specific identifiers (product codes, internal IDs, medical terms) as personally identifiable information.
+**Symptom**: Legitimate queries are blocked or have critical information redacted, producing useless model responses. Users complain about "the AI not understanding my question."
+**Mitigation**: Fine-tune PII detection on domain-specific data. Maintain an allow-list of known entity patterns. Log false positives and review weekly.
+
+### Multi-Turn Context Accumulation
+**Trigger**: An attacker spreads a malicious instruction across multiple turns of conversation, each turn individually benign.
+**Symptom**: Per-message sanitization passes every turn, but the concatenated context assembles a complete injection. The attack is invisible to single-turn analysis.
+**Mitigation**: Run injection detection on the full accumulated context periodically, not just the latest message. Set a context window sanitization interval.
+
 ## Implementation Example
 
 ```python

@@ -42,6 +42,7 @@ Every pattern follows the same structure:
 | When to Use It | Specific conditions and workload types |
 | When not to Use It | Explicit anti-use-cases |
 | Trade-offs | 2-4 honest trade-offs |
+| Failure Modes | What breaks when the pattern is deployed correctly — trigger, symptom, mitigation |
 | Implementation Example | Minimal working code snippet |
 | Tool Landscape | Tools that implement or support the pattern |
 | Related Patterns | Links to adjacent patterns |
