@@ -91,6 +91,12 @@ export default defineConfig({
           ],
         },
         {
+          label: "Case Studies",
+          items: [
+            { label: "Perplexity AI – Real-Time Search", slug: "case-studies/perplexity-ai" },
+          ],
+        },
+        {
           label: "Pillars",
           items: [
             { label: "Inference & Serving", slug: "patterns/inference-and-serving" },
